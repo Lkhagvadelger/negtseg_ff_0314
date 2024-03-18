@@ -1,0 +1,3 @@
+NSCameraUsageDescription = "НЭГ ЦЭГ АПП камерт хандахыг хүсэж байна.";
+NSPhotoLibraryUsageDescription = "НЭГ ЦЭГ АПП зурагруу хандахыг хүсэж байна.";
+NSLocationWhenInUseUsageDescription = "НЭГ ЦЭГ АПП таны GPS байрлалд хандахыг хүсэж байна.";

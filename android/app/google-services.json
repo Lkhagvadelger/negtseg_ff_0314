@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "389364127778",
+    "project_id": "negtseg-7ag4fs",
+    "storage_bucket": "negtseg-7ag4fs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389364127778:android:1f7e3f5799553ef3af127b",
+        "android_client_info": {
+          "package_name": "app.negtseg.tech"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByH0Yjp6sTITDw77rmPU-CDEPFPtTDTCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
