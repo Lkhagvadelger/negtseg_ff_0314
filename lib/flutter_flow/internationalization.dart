@@ -729,23 +729,23 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
   },
   // HomePageNew
   {
-    'j2d8fzta': {
+    'i17bzb2u': {
       'mn': 'Бүтээгдэхүүн',
       'en': 'Бүтээгдэхүүн',
     },
-    '4gc4skce': {
+    'o73t00y6': {
       'mn': 'Худалдааны төв',
       'en': 'Худалдааны төв',
     },
-    'zb70lob3': {
+    'c2pvrp31': {
       'mn': 'Expo',
       'en': 'Expo',
     },
-    'ka4cj1si': {
+    'nfviqh5b': {
       'mn': 'Tab View 3',
       'en': '',
     },
-    'm4m2qnas': {
+    'vm37ip8p': {
       'mn': 'LOADING',
       'en': 'LOADING',
     },

@@ -16,10 +16,12 @@ class PostNewCategoryWidget extends StatefulWidget {
     super.key,
     required this.catIds,
     required this.catIndexs,
+    this.catList,
   });
 
   final List<String>? catIds;
   final List<int>? catIndexs;
+  final List<dynamic>? catList;
 
   @override
   State<PostNewCategoryWidget> createState() => _PostNewCategoryWidgetState();

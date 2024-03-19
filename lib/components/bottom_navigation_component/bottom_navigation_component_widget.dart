@@ -101,6 +101,9 @@ class _BottomNavigationComponentWidgetState
     super.initState();
     _model = createModel(context, () => BottomNavigationComponentModel());
 
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {});
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -113,6 +116,8 @@ class _BottomNavigationComponentWidgetState
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: 64.0,
@@ -377,13 +382,13 @@ class _BottomNavigationComponentWidgetState
                       onTap: () async {
                         context.pushNamed(
                           'PostNew',
-                          extra: <String, dynamic>{
-                            kTransitionInfoKey: TransitionInfo(
-                              hasTransition: true,
-                              transitionType: PageTransitionType.bottomToTop,
-                              duration: Duration(milliseconds: 100),
+                          queryParameters: {
+                            'categoryList': serializeParam(
+                              _model.data,
+                              ParamType.JSON,
+                              true,
                             ),
-                          },
+                          }.withoutNulls,
                         );
                       },
                       child: Column(
@@ -471,6 +476,23 @@ class _BottomNavigationComponentWidgetState
                       hoverColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: Text('TITILE'),
+                              content: Text(_model.data.length.toString()),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext),
+                                  child: Text('Ok'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
                         context.pushNamed(
                           'Order',
                           extra: <String, dynamic>{

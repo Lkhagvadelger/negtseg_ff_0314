@@ -11,6 +11,16 @@ import 'package:provider/provider.dart';
 
 class BottomNavigationComponentModel
     extends FlutterFlowModel<BottomNavigationComponentWidget> {
+  ///  Local state fields for this component.
+
+  List<dynamic> data = [];
+  void addToData(dynamic item) => data.add(item);
+  void removeFromData(dynamic item) => data.remove(item);
+  void removeAtIndexFromData(int index) => data.removeAt(index);
+  void insertAtIndexInData(int index, dynamic item) => data.insert(index, item);
+  void updateDataAtIndex(int index, Function(dynamic) updateFn) =>
+      data[index] = updateFn(data[index]);
+
   /// Initialization and disposal methods.
 
   @override

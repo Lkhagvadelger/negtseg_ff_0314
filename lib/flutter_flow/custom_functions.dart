@@ -16,3 +16,11 @@ String listToString(List<String>? listString) {
   String jsonList = jsonEncode(listString);
   return jsonList;
 }
+
+List<MainDataStruct>? getCategoryFromMainData(
+  List<dynamic> data,
+  int index,
+) {
+  var result = data[index];
+  return result;
+}

@@ -30,6 +30,8 @@ class HomePageNewModel extends FlutterFlowModel<HomePageNewWidget> {
   final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - API (HomeMainCategory)] action in HomePageNew widget.
   ApiCallResponse? apiHomeMainCategory;
+  // Stores action output result for [Backend Call - API (Categories)] action in HomePageNew widget.
+  ApiCallResponse? apiResultProduct;
   // State field(s) for TabBar widget.
   TabController? tabBarController;
   int get tabBarCurrentIndex =>

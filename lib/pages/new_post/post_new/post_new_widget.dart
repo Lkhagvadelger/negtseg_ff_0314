@@ -1,10 +1,8 @@
-import '/backend/schema/structs/index.dart';
 import '/components/modals/modal_category_item/modal_category_item_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'post_new_model.dart';
@@ -32,13 +30,6 @@ class _PostNewWidgetState extends State<PostNewWidget> {
     super.initState();
     _model = createModel(context, () => PostNewModel());
 
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        FFAppState().FormZar = FormZarStruct();
-      });
-    });
-
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -51,8 +42,6 @@ class _PostNewWidgetState extends State<PostNewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -173,15 +162,13 @@ class _PostNewWidgetState extends State<PostNewWidget> {
                           EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
                       child: Builder(
                         builder: (context) {
-                          final categoriesList =
-                              widget.categoryList?.toList() ?? [];
+                          final catList = widget.categoryList?.toList() ?? [];
                           return SingleChildScrollView(
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
-                              children: List.generate(categoriesList.length,
-                                  (categoriesListIndex) {
-                                final categoriesListItem =
-                                    categoriesList[categoriesListIndex];
+                              children:
+                                  List.generate(catList.length, (catListIndex) {
+                                final catListItem = catList[catListIndex];
                                 return InkWell(
                                   splashColor: Colors.transparent,
                                   focusColor: Colors.transparent,
@@ -194,8 +181,7 @@ class _PostNewWidgetState extends State<PostNewWidget> {
                                     });
                                     // SetCatIndexes Add
                                     setState(() {
-                                      _model.addToSelCatIndexes(
-                                          categoriesListIndex);
+                                      _model.addToSelCatIndexes(catListIndex);
                                     });
 
                                     context.pushNamed(
@@ -203,7 +189,7 @@ class _PostNewWidgetState extends State<PostNewWidget> {
                                       queryParameters: {
                                         'catIds': serializeParam(
                                           (getJsonField(
-                                            categoriesListItem,
+                                            catListItem,
                                             r'''$.id''',
                                             true,
                                           ) as List)
@@ -217,6 +203,11 @@ class _PostNewWidgetState extends State<PostNewWidget> {
                                           ParamType.int,
                                           true,
                                         ),
+                                        'catList': serializeParam(
+                                          widget.categoryList,
+                                          ParamType.JSON,
+                                          true,
+                                        ),
                                       }.withoutNulls,
                                     );
                                   },
@@ -224,29 +215,29 @@ class _PostNewWidgetState extends State<PostNewWidget> {
                                     model:
                                         _model.modalCategoryItemModels.getModel(
                                       getJsonField(
-                                        categoriesListItem,
+                                        catListItem,
                                         r'''$.id''',
                                       ).toString(),
-                                      categoriesListIndex,
+                                      catListIndex,
                                     ),
                                     updateCallback: () => setState(() {}),
                                     child: ModalCategoryItemWidget(
                                       key: Key(
                                         'Keyw4e_${getJsonField(
-                                          categoriesListItem,
+                                          catListItem,
                                           r'''$.id''',
                                         ).toString()}',
                                       ),
                                       title: getJsonField(
-                                        categoriesListItem,
+                                        catListItem,
                                         r'''$.name''',
                                       ).toString(),
                                       postCount: getJsonField(
-                                        categoriesListItem,
+                                        catListItem,
                                         r'''$.totalCount''',
                                       ),
                                       iconUrl: getJsonField(
-                                        categoriesListItem,
+                                        catListItem,
                                         r'''$.media.icon''',
                                       ).toString(),
                                     ),

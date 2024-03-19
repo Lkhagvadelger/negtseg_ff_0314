@@ -72,6 +72,9 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        FFAppState().MainData = [];
+      });
       if (FFAppState().IsOnboarded) {
         // MainCategory API
         _model.apiHomeMainCategory = await HomeMainCategoryCall.call(
@@ -92,6 +95,91 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                 .cast<MainCategoryStruct>();
             FFAppState().MainDataSelectedIndex = 0;
           });
+          await showDialog(
+            context: context,
+            builder: (alertDialogContext) {
+              return AlertDialog(
+                title: Text('APO FINISH'),
+                content: Text('MAIN CATEGORY API FINISH'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(alertDialogContext),
+                    child: Text('Ok'),
+                  ),
+                ],
+              );
+            },
+          );
+          // Product Cat Api CALL
+          _model.apiResultProduct = await CategoriesCall.call(
+            countryCode: 'MN',
+            mainCategoryId: FFAppState().MainCategories[0].id,
+          );
+          if ((_model.apiResultProduct?.succeeded ?? true)) {
+            await showDialog(
+              context: context,
+              builder: (alertDialogContext) {
+                return AlertDialog(
+                  title: Text('BEFORE API CALL'),
+                  content: Text('BORFORE API CALL'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(alertDialogContext),
+                      child: Text('Ok'),
+                    ),
+                  ],
+                );
+              },
+            );
+            setState(() {
+              FFAppState().addToMainData(MainDataStruct(
+                categories: (getJsonField(
+                  (_model.apiResultProduct?.jsonBody ?? ''),
+                  r'''$.categories''',
+                  true,
+                )
+                        ?.toList()
+                        .map<CategoryStruct?>(CategoryStruct.maybeFromMap)
+                        .toList() as Iterable<CategoryStruct?>)
+                    .withoutNulls,
+                promoHome: (getJsonField(
+                  (_model.apiResultProduct?.jsonBody ?? ''),
+                  r'''$.promo_home''',
+                  true,
+                )
+                        ?.toList()
+                        .map<PromosStruct?>(PromosStruct.maybeFromMap)
+                        .toList() as Iterable<PromosStruct?>)
+                    .withoutNulls,
+                promoOther: (getJsonField(
+                  (_model.apiResultProduct?.jsonBody ?? ''),
+                  r'''$.promo_other''',
+                  true,
+                )
+                        ?.toList()
+                        .map<PromosStruct?>(PromosStruct.maybeFromMap)
+                        .toList() as Iterable<PromosStruct?>)
+                    .withoutNulls,
+              ));
+            });
+            await showDialog(
+              context: context,
+              builder: (alertDialogContext) {
+                return AlertDialog(
+                  title: Text('MAIN DATAA'),
+                  content: Text(
+                      (FFAppState().MainData.first.promoHome.first.toMap())
+                          .toString()),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(alertDialogContext),
+                      child: Text('Ok'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       } else {
         context.goNamed(
@@ -141,12 +229,12 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: SafeArea(
           top: true,
-          child: Stack(
-            children: [
-              Builder(
-                builder: (context) {
-                  if (FFAppState().MainCategories.isNotEmpty) {
-                    return Column(
+          child: Builder(
+            builder: (context) {
+              if (FFAppState().MainCategories.isNotEmpty) {
+                return Stack(
+                  children: [
+                    Column(
                       children: [
                         Align(
                           alignment: Alignment(0.0, 0),
@@ -171,17 +259,17 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                             tabs: [
                               Tab(
                                 text: FFLocalizations.of(context).getText(
-                                  'j2d8fzta' /* Бүтээгдэхүүн */,
+                                  'i17bzb2u' /* Бүтээгдэхүүн */,
                                 ),
                               ),
                               Tab(
                                 text: FFLocalizations.of(context).getText(
-                                  '4gc4skce' /* Худалдааны төв */,
+                                  'o73t00y6' /* Худалдааны төв */,
                                 ),
                               ),
                               Tab(
                                 text: FFLocalizations.of(context).getText(
-                                  'zb70lob3' /* Expo */,
+                                  'c2pvrp31' /* Expo */,
                                 ),
                               ),
                             ],
@@ -219,7 +307,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                           .secondaryBackground,
                                     ),
                                     child: RefreshIndicator(
-                                      key: Key('RefreshIndicator_f82oml16'),
+                                      key: Key('RefreshIndicator_ayfu2s3j'),
                                       color: FlutterFlowTheme.of(context)
                                           .secondary,
                                       backgroundColor:
@@ -322,11 +410,11 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                           future: CategoriesCall
                                                               .call(
                                                             countryCode: 'MN',
-                                                            mainCategoryId: FFAppState()
-                                                                .MainCategories[
-                                                                    FFAppState()
-                                                                        .MainDataSelectedIndex]
-                                                                .id,
+                                                            mainCategoryId:
+                                                                FFAppState()
+                                                                    .MainCategories[
+                                                                        0]
+                                                                    .id,
                                                           ),
                                                           builder: (context,
                                                               snapshot) {
@@ -501,7 +589,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                                 );
                                                                               },
                                                                               child: CategoryItemWidget(
-                                                                                key: Key('Keyhcu_${productCategoiresIndex}_of_${productCategoires.length}'),
+                                                                                key: Key('Key0kz_${productCategoiresIndex}_of_${productCategoires.length}'),
                                                                                 categoryItem: productCategoiresItem,
                                                                               ),
                                                                             );
@@ -535,11 +623,11 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                             HomeTopZarApiCall
                                                                 .call(
                                                           countryCode: 'MN',
-                                                          categoryMainId: FFAppState()
-                                                              .MainCategories[
-                                                                  FFAppState()
-                                                                      .MainDataSelectedIndex]
-                                                              .id,
+                                                          categoryMainId:
+                                                              FFAppState()
+                                                                  .MainCategories[
+                                                                      0]
+                                                                  .id,
                                                         ),
                                                         builder: (context,
                                                             snapshot) {
@@ -628,7 +716,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                             productTopZarApi[productTopZarApiIndex];
                                                                         return TopProductItemWidget(
                                                                           key: Key(
-                                                                              'Key3xc_${productTopZarApiIndex}_of_${productTopZarApi.length}'),
+                                                                              'Key1s3_${productTopZarApiIndex}_of_${productTopZarApi.length}'),
                                                                           images:
                                                                               getJsonField(
                                                                             productTopZarApiItem,
@@ -693,11 +781,11 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                 PromoListCall
                                                                     .call(
                                                               countryCode: 'MN',
-                                                              mainCategoryId: FFAppState()
-                                                                  .MainCategories[
-                                                                      FFAppState()
-                                                                          .MainDataSelectedIndex]
-                                                                  .id,
+                                                              mainCategoryId:
+                                                                  FFAppState()
+                                                                      .MainCategories[
+                                                                          0]
+                                                                      .id,
                                                             ),
                                                             builder: (context,
                                                                 snapshot) {
@@ -870,7 +958,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                   categoryMainId:
                                                                       FFAppState()
                                                                           .MainCategories[
-                                                                              FFAppState().MainDataSelectedIndex]
+                                                                              0]
                                                                           .id,
                                                                 ),
                                                                 builder: (context,
@@ -965,7 +1053,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                               updateCallback: () => setState(() {}),
                                                                               child: ProductItemPromoWidget(
                                                                                 key: Key(
-                                                                                  'Keyx7v_${getJsonField(
+                                                                                  'Keyqgh_${getJsonField(
                                                                                     productRecentItem,
                                                                                     r'''$.id''',
                                                                                   ).toString()}',
@@ -1030,7 +1118,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                           .secondaryBackground,
                                     ),
                                     child: RefreshIndicator(
-                                      key: Key('RefreshIndicator_f8j6get3'),
+                                      key: Key('RefreshIndicator_z9foqjv4'),
                                       color: FlutterFlowTheme.of(context)
                                           .secondary,
                                       backgroundColor:
@@ -1319,7 +1407,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                                 updateCallback: () => setState(() {}),
                                                                                 child: CategoryItemWidget(
                                                                                   key: Key(
-                                                                                    'Keyu8v_${shopCategoriesIndex.toString()}',
+                                                                                    'Keyfve_${shopCategoriesIndex.toString()}',
                                                                                   ),
                                                                                   categoryItem: shopCategoriesItem,
                                                                                 ),
@@ -1448,7 +1536,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                             homeTopzarAPI[homeTopzarAPIIndex];
                                                                         return TopProductItemWidget(
                                                                           key: Key(
-                                                                              'Keyxhu_${homeTopzarAPIIndex}_of_${homeTopzarAPI.length}'),
+                                                                              'Key66f_${homeTopzarAPIIndex}_of_${homeTopzarAPI.length}'),
                                                                           images:
                                                                               getJsonField(
                                                                             homeTopzarAPIItem,
@@ -1786,7 +1874,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                               updateCallback: () => setState(() {}),
                                                                               child: ProductItemPromoWidget(
                                                                                 key: Key(
-                                                                                  'Key02l_${getJsonField(
+                                                                                  'Keywwj_${getJsonField(
                                                                                     homeShopRecentItem,
                                                                                     r'''$.id''',
                                                                                   ).toString()}',
@@ -1842,7 +1930,7 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                               KeepAliveWidgetWrapper(
                                 builder: (context) => Text(
                                   FFLocalizations.of(context).getText(
-                                    'ka4cj1si' /* Tab View 3 */,
+                                    'nfviqh5b' /* Tab View 3 */,
                                   ),
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
@@ -1857,31 +1945,31 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                           ),
                         ),
                       ],
-                    );
-                  } else {
-                    return Align(
-                      alignment: AlignmentDirectional(0.0, 0.0),
-                      child: Text(
-                        FFLocalizations.of(context).getText(
-                          'm4m2qnas' /* LOADING */,
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional(0.0, 1.0),
+                      child: wrapWithModel(
+                        model: _model.bottomNavigationComponentModel,
+                        updateCallback: () => setState(() {}),
+                        child: BottomNavigationComponentWidget(
+                          selectedPageIndex: 1,
                         ),
-                        style: FlutterFlowTheme.of(context).bodyMedium,
                       ),
-                    );
-                  }
-                },
-              ),
-              Align(
-                alignment: AlignmentDirectional(0.0, 1.0),
-                child: wrapWithModel(
-                  model: _model.bottomNavigationComponentModel,
-                  updateCallback: () => setState(() {}),
-                  child: BottomNavigationComponentWidget(
-                    selectedPageIndex: 1,
+                    ),
+                  ],
+                );
+              } else {
+                return Align(
+                  alignment: AlignmentDirectional(0.0, 0.0),
+                  child: Text(
+                    FFLocalizations.of(context).getText(
+                      'vm37ip8p' /* LOADING */,
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium,
                   ),
-                ),
-              ),
-            ],
+                );
+              }
+            },
           ),
         ),
       ),
