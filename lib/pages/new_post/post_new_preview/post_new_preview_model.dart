@@ -1,5 +1,6 @@
 import '/components/button_left_icon_title/button_left_icon_title_widget.dart';
 import '/components/buttons/button_circle_font_icon/button_circle_font_icon_widget.dart';
+import '/components/buttons/button_round_normal/button_round_normal_widget.dart';
 import '/components/myzar_item_with_date/myzar_item_with_date_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -23,6 +24,8 @@ class PostNewPreviewModel extends FlutterFlowModel<PostNewPreviewWidget> {
   late ButtonCircleFontIconModel buttonCircleFontIconModel2;
   // Model for ButtonCircleFontIcon component.
   late ButtonCircleFontIconModel buttonCircleFontIconModel3;
+  // Model for ButtonRoundNormal component.
+  late ButtonRoundNormalModel buttonRoundNormalModel;
 
   /// Initialization and disposal methods.
 
@@ -38,6 +41,8 @@ class PostNewPreviewModel extends FlutterFlowModel<PostNewPreviewWidget> {
         createModel(context, () => ButtonCircleFontIconModel());
     buttonCircleFontIconModel3 =
         createModel(context, () => ButtonCircleFontIconModel());
+    buttonRoundNormalModel =
+        createModel(context, () => ButtonRoundNormalModel());
   }
 
   @override
@@ -48,6 +53,7 @@ class PostNewPreviewModel extends FlutterFlowModel<PostNewPreviewWidget> {
     buttonCircleFontIconModel1.dispose();
     buttonCircleFontIconModel2.dispose();
     buttonCircleFontIconModel3.dispose();
+    buttonRoundNormalModel.dispose();
   }
 
   /// Action blocks are added here.

@@ -1,5 +1,6 @@
 import '/components/button_left_icon_title/button_left_icon_title_widget.dart';
 import '/components/buttons/button_circle_font_icon/button_circle_font_icon_widget.dart';
+import '/components/buttons/button_round_normal/button_round_normal_widget.dart';
 import '/components/myzar_item_with_date/myzar_item_with_date_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -182,8 +183,8 @@ class _PostNewPreviewWidgetState extends State<PostNewPreviewWidget> {
                                 model: _model.myzarItemWithDateModel,
                                 updateCallback: () => setState(() {}),
                                 child: MyzarItemWithDateWidget(
-                                  title: 'Dual stock',
-                                  price: 8000.0,
+                                  title: FFAppState().FormZar.title,
+                                  price: FFAppState().FormZar.price,
                                   dateString: 'Улбаанбаатар',
                                 ),
                               ),
@@ -280,7 +281,152 @@ class _PostNewPreviewWidgetState extends State<PostNewPreviewWidget> {
                                   ),
                                   child: Text(
                                     FFLocalizations.of(context).getText(
-                                      'jmdnflpt' /* Ангилал */,
+                                      'jmdnflpt' /* Зарын дугаар */,
+                                    ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyMedium,
+                                  ),
+                                ),
+                                Text(
+                                  FFAppState().FormZar.category.name,
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 8.0, 16.0, 8.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.5,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: Text(
+                                    FFLocalizations.of(context).getText(
+                                      'nn2tsnh5' /* Ангилал */,
+                                    ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyMedium,
+                                  ),
+                                ),
+                                Text(
+                                  FFAppState().FormZar.category.name,
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 8.0, 16.0, 8.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.5,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: Text(
+                                    FFLocalizations.of(context).getText(
+                                      '0ytgr66w' /* Үзсэн */,
+                                    ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyMedium,
+                                  ),
+                                ),
+                                Text(
+                                  FFAppState().FormZar.category.name,
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 8.0, 16.0, 8.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.5,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: Text(
+                                    FFLocalizations.of(context).getText(
+                                      'mnodvi47' /* Утас үзсэн */,
+                                    ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyMedium,
+                                  ),
+                                ),
+                                Text(
+                                  FFAppState().FormZar.category.name,
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 8.0, 16.0, 8.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.5,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: Text(
+                                    FFLocalizations.of(context).getText(
+                                      'zb1zx34l' /* Гар утас */,
+                                    ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyMedium,
+                                  ),
+                                ),
+                                Text(
+                                  FFAppState().FormZar.category.name,
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 8.0, 16.0, 8.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.5,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: Text(
+                                    FFLocalizations.of(context).getText(
+                                      'frwduozd' /* Цахим шуудан */,
                                     ),
                                     style:
                                         FlutterFlowTheme.of(context).bodyMedium,
@@ -295,6 +441,44 @@ class _PostNewPreviewWidgetState extends State<PostNewPreviewWidget> {
                             ),
                           ),
                         ].divide(SizedBox(height: 4.0)),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(16.0, 50.0, 16.0, 0.0),
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width * 1.0,
+                      height: 44.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () async {
+                          context.goNamed(
+                            'HomePageNew',
+                            extra: <String, dynamic>{
+                              kTransitionInfoKey: TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.fade,
+                                duration: Duration(milliseconds: 0),
+                              ),
+                            },
+                          );
+                        },
+                        child: wrapWithModel(
+                          model: _model.buttonRoundNormalModel,
+                          updateCallback: () => setState(() {}),
+                          child: ButtonRoundNormalWidget(
+                            title: 'ДУУСГАХ',
+                            colorString: '#5148E7',
+                            textColor: '#FFFFFF',
+                          ),
+                        ),
                       ),
                     ),
                   ),

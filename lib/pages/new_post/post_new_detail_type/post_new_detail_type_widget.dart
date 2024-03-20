@@ -223,7 +223,11 @@ class _PostNewDetailTypeWidgetState extends State<PostNewDetailTypeWidget> {
                         wrapWithModel(
                           model: _model.postNewListItemModel,
                           updateCallback: () => setState(() {}),
-                          child: PostNewListItemWidget(),
+                          child: PostNewListItemWidget(
+                            title: FFAppState().FormZar.title,
+                            price: FFAppState().FormZar.price.toString(),
+                            date: 'Улаанбаатар',
+                          ),
                         ),
                       ].divide(SizedBox(height: 20.0)),
                     ),

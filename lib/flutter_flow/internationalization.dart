@@ -677,8 +677,28 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': 'Огноо',
     },
     'jmdnflpt': {
+      'mn': 'Зарын дугаар',
+      'en': 'Зарын дугаар',
+    },
+    'nn2tsnh5': {
       'mn': 'Ангилал',
-      'en': '',
+      'en': 'Ангилал',
+    },
+    '0ytgr66w': {
+      'mn': 'Үзсэн',
+      'en': 'Үзсэн',
+    },
+    'mnodvi47': {
+      'mn': 'Утас үзсэн',
+      'en': 'Утас үзсэн',
+    },
+    'zb1zx34l': {
+      'mn': 'Гар утас',
+      'en': 'Гар утас',
+    },
+    'frwduozd': {
+      'mn': 'Цахим шуудан',
+      'en': 'Цахим шуудан',
     },
     '3bsbfc8s': {
       'mn': 'Миний зар',
@@ -1146,21 +1166,6 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': '',
     },
     'uj2v80rp': {
-      'mn': 'Hello World',
-      'en': '',
-    },
-  },
-  // PostNewListItem
-  {
-    'w5eejg6q': {
-      'mn': 'Hello World',
-      'en': '',
-    },
-    'jn5efquf': {
-      'mn': 'Hello World',
-      'en': '840\'999 ₮',
-    },
-    'fklyohe6': {
       'mn': 'Hello World',
       'en': '',
     },

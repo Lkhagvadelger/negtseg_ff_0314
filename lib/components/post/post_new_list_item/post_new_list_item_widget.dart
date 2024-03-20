@@ -7,7 +7,16 @@ import 'post_new_list_item_model.dart';
 export 'post_new_list_item_model.dart';
 
 class PostNewListItemWidget extends StatefulWidget {
-  const PostNewListItemWidget({super.key});
+  const PostNewListItemWidget({
+    super.key,
+    this.title,
+    this.price,
+    this.date,
+  });
+
+  final String? title;
+  final String? price;
+  final String? date;
 
   @override
   State<PostNewListItemWidget> createState() => _PostNewListItemWidgetState();
@@ -56,9 +65,7 @@ class _PostNewListItemWidgetState extends State<PostNewListItemWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              FFLocalizations.of(context).getText(
-                'w5eejg6q' /* Hello World */,
-              ),
+              widget.title!,
               style: FlutterFlowTheme.of(context).bodyMedium.override(
                     fontFamily: 'SFPRO',
                     color: FlutterFlowTheme.of(context).grayBodyText,
@@ -69,9 +76,7 @@ class _PostNewListItemWidgetState extends State<PostNewListItemWidget> {
                   ),
             ),
             Text(
-              FFLocalizations.of(context).getText(
-                'jn5efquf' /* Hello World */,
-              ),
+              widget.price!,
               style: FlutterFlowTheme.of(context).bodyMedium.override(
                     fontFamily: 'SFPRO',
                     fontSize: 17.0,
@@ -84,9 +89,7 @@ class _PostNewListItemWidgetState extends State<PostNewListItemWidget> {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0.0, 14.0, 0.0, 0.0),
               child: Text(
-                FFLocalizations.of(context).getText(
-                  'fklyohe6' /* Hello World */,
-                ),
+                widget.date!,
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'SFPRO',
                       color: FlutterFlowTheme.of(context).helpText,

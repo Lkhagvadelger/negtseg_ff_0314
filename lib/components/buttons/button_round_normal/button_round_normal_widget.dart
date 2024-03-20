@@ -53,7 +53,7 @@ class _ButtonRoundNormalWidgetState extends State<ButtonRoundNormalWidget> {
       decoration: BoxDecoration(
         color: colorFromCssString(
           widget.colorString!,
-          defaultColor: Colors.black,
+          defaultColor: FlutterFlowTheme.of(context).primaryBackground,
         ),
         borderRadius: BorderRadius.circular(999.0),
         shape: BoxShape.rectangle,
@@ -62,6 +62,7 @@ class _ButtonRoundNormalWidgetState extends State<ButtonRoundNormalWidget> {
           width: 0.0,
         ),
       ),
+      alignment: AlignmentDirectional(0.0, 0.0),
       child: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(12.0, 6.0, 12.0, 6.0),
         child: Text(
