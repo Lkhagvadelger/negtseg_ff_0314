@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,23 +43,26 @@ class _PostNewCategoryWidgetState extends State<PostNewCategoryWidget> {
       if ((widget.catIds?.length == 1) &&
           ((_model.selCatIds.isNotEmpty) == false)) {
         setState(() {
-          _model.selCategory =
-              FFAppState().MainData.first.categories.first.toMap();
-          _model.addToSelCatNames(
-              FFAppState().MainData.first.categories.first.name);
+          _model.selCategory = functions.getCategoryByIndex(
+              FFAppState().MainDataJson.toList(), 0, widget.catIndexs!.first);
+          _model.addToSelCatNames(getJsonField(
+            functions.getCategoryByIndex(
+                FFAppState().MainDataJson.toList(), 0, widget.catIndexs!.first),
+            r'''$.name''',
+          ).toString().toString());
         });
       } else {
         while (_model.catIdCounter < widget.catIds!.length) {
           if (_model.catIdCounter == 0) {
-            // SET SelCategory
+            // Set SelCategoryy
             setState(() {
-              _model.selCategory = FFAppState()
-                  .MainData
-                  .first
-                  .categories[_model.catIdCounter]
-                  .toMap();
+              _model.selCategory = functions.getCategoryByIndex(
+                  FFAppState().MainDataJson.toList(),
+                  0,
+                  widget.catIndexs![_model.catIdCounter]);
               _model.addToSelCatNames(getJsonField(
-                _model.selCategory,
+                functions.getCategoryByIndex(FFAppState().MainDataJson.toList(),
+                    0, widget.catIndexs![_model.catIdCounter]),
                 r'''$.name''',
               ).toString().toString());
             });
@@ -436,13 +440,15 @@ class _PostNewCategoryWidgetState extends State<PostNewCategoryWidget> {
                                           _model.sendCatIndexes.length) {
                                         // Hamgiin ehnii category-g shalgaj baigaa. Uchir ni songoson category dotorhi childreng avahiin tuld SelCategory-g set hiij ugch baigaa
                                         if (_model.catIdCounter == 0) {
-                                          // Set SelCat
+                                          // Set SelCategoryy
                                           setState(() {
-                                            _model.selCategory = FFAppState()
-                                                .MainData
-                                                .first
-                                                .categories[_model.catIdCounter]
-                                                .toMap();
+                                            _model.selCategory =
+                                                functions.getCategoryByIndex(
+                                                    FFAppState()
+                                                        .MainDataJson
+                                                        .toList(),
+                                                    0,
+                                                    widget.catIndexs!.first);
                                           });
                                           // Set cat Filters
                                           setState(() {

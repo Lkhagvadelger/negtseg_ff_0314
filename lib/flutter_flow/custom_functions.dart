@@ -36,3 +36,11 @@ dynamic categoryJsonPrepare(
     "promo_other": dataApiResult[index]["promo_other"]
   };
 }
+
+dynamic getCategoryByIndex(
+  List<dynamic> mainDataJson,
+  int mainCatIndex,
+  int categoryIndex,
+) {
+  return mainDataJson[mainCatIndex]["categories"][categoryIndex];
+}

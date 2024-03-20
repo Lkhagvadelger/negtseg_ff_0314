@@ -328,35 +328,6 @@ class FFAppState extends ChangeNotifier {
     prefs.setString('ff_SettingsConfig', _SettingsConfig.serialize());
   }
 
-  List<MainDataStruct> _MainData = [];
-  List<MainDataStruct> get MainData => _MainData;
-  set MainData(List<MainDataStruct> _value) {
-    _MainData = _value;
-  }
-
-  void addToMainData(MainDataStruct _value) {
-    _MainData.add(_value);
-  }
-
-  void removeFromMainData(MainDataStruct _value) {
-    _MainData.remove(_value);
-  }
-
-  void removeAtIndexFromMainData(int _index) {
-    _MainData.removeAt(_index);
-  }
-
-  void updateMainDataAtIndex(
-    int _index,
-    MainDataStruct Function(MainDataStruct) updateFn,
-  ) {
-    _MainData[_index] = updateFn(_MainData[_index]);
-  }
-
-  void insertAtIndexInMainData(int _index, MainDataStruct _value) {
-    _MainData.insert(_index, _value);
-  }
-
   int _MainDataSelectedIndex = 0;
   int get MainDataSelectedIndex => _MainDataSelectedIndex;
   set MainDataSelectedIndex(int _value) {
