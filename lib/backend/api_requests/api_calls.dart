@@ -64,6 +64,11 @@ class HomeMainCategoryCall {
         r'''$.mainCategories''',
         true,
       ) as List?;
+  static List? datCategories(dynamic response) => getJsonField(
+        response,
+        r'''$.data''',
+        true,
+      ) as List?;
 }
 
 class CategoriesCall {

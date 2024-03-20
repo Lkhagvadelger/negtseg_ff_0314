@@ -17,10 +17,22 @@ String listToString(List<String>? listString) {
   return jsonList;
 }
 
-List<MainDataStruct>? getCategoryFromMainData(
+List<dynamic> getDataFromMainDataJson(
   List<dynamic> data,
   int index,
+  String objectName,
 ) {
-  var result = data[index];
+  var result = data[index][objectName];
   return result;
+}
+
+dynamic categoryJsonPrepare(
+  List<dynamic> dataApiResult,
+  int index,
+) {
+  return {
+    "categories": dataApiResult[index]["categories"],
+    "promo_home": dataApiResult[index]["promo_home"],
+    "promo_other": dataApiResult[index]["promo_other"]
+  };
 }

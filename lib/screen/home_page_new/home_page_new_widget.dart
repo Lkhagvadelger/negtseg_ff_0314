@@ -14,6 +14,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:flutter/material.dart';
@@ -73,7 +74,10 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       setState(() {
-        FFAppState().MainData = [];
+        FFAppState().MainDataJson = [];
+      });
+      setState(() {
+        _model.mainCatCounter = 0;
       });
       if (FFAppState().IsOnboarded) {
         // MainCategory API
@@ -95,90 +99,20 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                 .cast<MainCategoryStruct>();
             FFAppState().MainDataSelectedIndex = 0;
           });
-          await showDialog(
-            context: context,
-            builder: (alertDialogContext) {
-              return AlertDialog(
-                title: Text('APO FINISH'),
-                content: Text('MAIN CATEGORY API FINISH'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(alertDialogContext),
-                    child: Text('Ok'),
-                  ),
-                ],
-              );
-            },
-          );
-          // Product Cat Api CALL
-          _model.apiResultProduct = await CategoriesCall.call(
-            countryCode: 'MN',
-            mainCategoryId: FFAppState().MainCategories[0].id,
-          );
-          if ((_model.apiResultProduct?.succeeded ?? true)) {
-            await showDialog(
-              context: context,
-              builder: (alertDialogContext) {
-                return AlertDialog(
-                  title: Text('BEFORE API CALL'),
-                  content: Text('BORFORE API CALL'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext),
-                      child: Text('Ok'),
-                    ),
-                  ],
-                );
-              },
-            );
+          while (_model.mainCatCounter < FFAppState().MainCategories.length) {
             setState(() {
-              FFAppState().addToMainData(MainDataStruct(
-                categories: (getJsonField(
-                  (_model.apiResultProduct?.jsonBody ?? ''),
-                  r'''$.categories''',
-                  true,
-                )
-                        ?.toList()
-                        .map<CategoryStruct?>(CategoryStruct.maybeFromMap)
-                        .toList() as Iterable<CategoryStruct?>)
-                    .withoutNulls,
-                promoHome: (getJsonField(
-                  (_model.apiResultProduct?.jsonBody ?? ''),
-                  r'''$.promo_home''',
-                  true,
-                )
-                        ?.toList()
-                        .map<PromosStruct?>(PromosStruct.maybeFromMap)
-                        .toList() as Iterable<PromosStruct?>)
-                    .withoutNulls,
-                promoOther: (getJsonField(
-                  (_model.apiResultProduct?.jsonBody ?? ''),
-                  r'''$.promo_other''',
-                  true,
-                )
-                        ?.toList()
-                        .map<PromosStruct?>(PromosStruct.maybeFromMap)
-                        .toList() as Iterable<PromosStruct?>)
-                    .withoutNulls,
-              ));
+              FFAppState().addToMainDataJson(functions.categoryJsonPrepare(
+                  getJsonField(
+                    (_model.apiHomeMainCategory?.jsonBody ?? ''),
+                    r'''$.data''',
+                    true,
+                  )!,
+                  _model.mainCatCounter));
             });
-            await showDialog(
-              context: context,
-              builder: (alertDialogContext) {
-                return AlertDialog(
-                  title: Text('MAIN DATAA'),
-                  content: Text(
-                      (FFAppState().MainData.first.promoHome.first.toMap())
-                          .toString()),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext),
-                      child: Text('Ok'),
-                    ),
-                  ],
-                );
-              },
-            );
+            // MainCatCounter++
+            setState(() {
+              _model.mainCatCounter = _model.mainCatCounter + 1;
+            });
           }
         }
       } else {
@@ -315,18 +249,25 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                               .borderBottomColor,
                                       strokeWidth: 3.0,
                                       onRefresh: () async {
+                                        setState(() {
+                                          FFAppState().MainDataJson = [];
+                                          FFAppState().MainCategories = [];
+                                        });
+                                        setState(() {
+                                          _model.mainCatCounter = 0;
+                                        });
                                         // MainCategory API
-                                        _model.apiHomeMainCategoryPull =
+                                        _model.apiHomeMainCategoryCopy =
                                             await HomeMainCategoryCall.call(
                                           countryCode: 'MN',
                                         );
-                                        if ((_model.apiHomeMainCategoryPull
+                                        if ((_model.apiHomeMainCategory
                                                 ?.succeeded ??
                                             true)) {
                                           setState(() {
                                             FFAppState()
                                                 .MainCategories = (getJsonField(
-                                              (_model.apiHomeMainCategoryPull
+                                              (_model.apiHomeMainCategory
                                                       ?.jsonBody ??
                                                   ''),
                                               r'''$.mainCategories''',
@@ -345,6 +286,28 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                             FFAppState().MainDataSelectedIndex =
                                                 0;
                                           });
+                                          while (_model.mainCatCounter <
+                                              FFAppState()
+                                                  .MainCategories
+                                                  .length) {
+                                            setState(() {
+                                              FFAppState().addToMainDataJson(
+                                                  functions.categoryJsonPrepare(
+                                                      getJsonField(
+                                                        (_model.apiHomeMainCategory
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                        r'''$.data''',
+                                                        true,
+                                                      )!,
+                                                      _model.mainCatCounter));
+                                            });
+                                            // MainCatCounter++
+                                            setState(() {
+                                              _model.mainCatCounter =
+                                                  _model.mainCatCounter + 1;
+                                            });
+                                          }
                                         }
                                       },
                                       child: SingleChildScrollView(
@@ -405,206 +368,183 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                   .of(context)
                                                               .secondaryBackground,
                                                         ),
-                                                        child: FutureBuilder<
-                                                            ApiCallResponse>(
-                                                          future: CategoriesCall
-                                                              .call(
-                                                            countryCode: 'MN',
-                                                            mainCategoryId:
-                                                                FFAppState()
-                                                                    .MainCategories[
-                                                                        0]
-                                                                    .id,
-                                                          ),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            // Customize what your widget looks like when it's loading.
-                                                            if (!snapshot
-                                                                .hasData) {
-                                                              return Center(
-                                                                child: SizedBox(
-                                                                  width: 40.0,
-                                                                  height: 40.0,
-                                                                  child:
-                                                                      CircularProgressIndicator(
-                                                                    valueColor:
-                                                                        AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondary,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            }
-                                                            final columnCategoriesResponse =
-                                                                snapshot.data!;
-                                                            return Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Align(
-                                                                  alignment:
-                                                                      AlignmentDirectional(
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            16.0,
-                                                                            0.0,
-                                                                            16.0,
-                                                                            0.0),
-                                                                    child:
-                                                                        InkWell(
-                                                                      splashColor:
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Align(
+                                                              alignment:
+                                                                  AlignmentDirectional(
+                                                                      0.0, 0.0),
+                                                              child: Padding(
+                                                                padding: EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        16.0,
+                                                                        0.0,
+                                                                        16.0,
+                                                                        0.0),
+                                                                child: InkWell(
+                                                                  splashColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  focusColor: Colors
+                                                                      .transparent,
+                                                                  hoverColor: Colors
+                                                                      .transparent,
+                                                                  highlightColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  onTap:
+                                                                      () async {
+                                                                    await showModalBottomSheet(
+                                                                      isScrollControlled:
+                                                                          true,
+                                                                      backgroundColor:
                                                                           Colors
                                                                               .transparent,
-                                                                      focusColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      hoverColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      highlightColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      onTap:
-                                                                          () async {
-                                                                        await showModalBottomSheet(
-                                                                          isScrollControlled:
-                                                                              true,
-                                                                          backgroundColor:
-                                                                              Colors.transparent,
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (context) {
-                                                                            return GestureDetector(
-                                                                              onTap: () => _model.unfocusNode.canRequestFocus ? FocusScope.of(context).requestFocus(_model.unfocusNode) : FocusScope.of(context).unfocus(),
-                                                                              child: Padding(
-                                                                                padding: MediaQuery.viewInsetsOf(context),
-                                                                                child: Container(
-                                                                                  height: MediaQuery.sizeOf(context).height * 0.9,
-                                                                                  child: ModalCategoryFilterWidget(
-                                                                                    title: FFLocalizations.of(context).getVariableText(
-                                                                                      mnText: 'Категори',
-                                                                                      enText: 'Категори',
-                                                                                    ),
-                                                                                    data: CategoriesCall.categories(
-                                                                                      columnCategoriesResponse.jsonBody,
-                                                                                    )!,
-                                                                                  ),
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) {
+                                                                        return GestureDetector(
+                                                                          onTap: () => _model.unfocusNode.canRequestFocus
+                                                                              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+                                                                              : FocusScope.of(context).unfocus(),
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                MediaQuery.viewInsetsOf(context),
+                                                                            child:
+                                                                                Container(
+                                                                              height: MediaQuery.sizeOf(context).height * 0.9,
+                                                                              child: ModalCategoryFilterWidget(
+                                                                                title: FFLocalizations.of(context).getVariableText(
+                                                                                  mnText: 'Категори',
+                                                                                  enText: 'Категори',
                                                                                 ),
+                                                                                data: functions.getDataFromMainDataJson(FFAppState().MainDataJson.toList(), 0, 'categories'),
                                                                               ),
-                                                                            );
-                                                                          },
-                                                                        ).then((value) =>
-                                                                            safeSetState(() {}));
+                                                                            ),
+                                                                          ),
+                                                                        );
                                                                       },
-                                                                      child:
-                                                                          wrapWithModel(
-                                                                        model: _model
-                                                                            .homeCategoryHeaderModel1,
-                                                                        updateCallback:
-                                                                            () =>
-                                                                                setState(() {}),
-                                                                        child:
-                                                                            HomeCategoryHeaderWidget(
-                                                                          title:
-                                                                              FFLocalizations.of(context).getVariableText(
-                                                                            mnText:
-                                                                                'Категори',
-                                                                            enText:
-                                                                                'Категори',
-                                                                          ),
-                                                                          titleBtn:
-                                                                              FFLocalizations.of(context).getVariableText(
-                                                                            mnText:
-                                                                                'Бүх категори',
-                                                                            enText:
-                                                                                'Бүх категори',
-                                                                          ),
-                                                                        ),
+                                                                    ).then((value) =>
+                                                                        safeSetState(
+                                                                            () {}));
+                                                                  },
+                                                                  child:
+                                                                      wrapWithModel(
+                                                                    model: _model
+                                                                        .homeCategoryHeaderModel1,
+                                                                    updateCallback: () =>
+                                                                        setState(
+                                                                            () {}),
+                                                                    child:
+                                                                        HomeCategoryHeaderWidget(
+                                                                      title: FFLocalizations.of(
+                                                                              context)
+                                                                          .getVariableText(
+                                                                        mnText:
+                                                                            'Категори',
+                                                                        enText:
+                                                                            'Категори',
+                                                                      ),
+                                                                      titleBtn:
+                                                                          FFLocalizations.of(context)
+                                                                              .getVariableText(
+                                                                        mnText:
+                                                                            'Бүх категори',
+                                                                        enText:
+                                                                            'Бүх категори',
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                Container(
-                                                                  width: MediaQuery.sizeOf(
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: MediaQuery
+                                                                          .sizeOf(
                                                                               context)
-                                                                          .width *
-                                                                      1.0,
-                                                                  height: 56.0,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Color(
-                                                                        0x00FFFFFF),
-                                                                  ),
-                                                                  child:
-                                                                      Builder(
-                                                                    builder:
-                                                                        (context) {
-                                                                      final productCategoires = (CategoriesCall.categories(
-                                                                                columnCategoriesResponse.jsonBody,
-                                                                              )?.toList() ??
-                                                                              [])
-                                                                          .take(10)
-                                                                          .toList();
-                                                                      return SingleChildScrollView(
-                                                                        scrollDirection:
-                                                                            Axis.horizontal,
-                                                                        child:
-                                                                            Row(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          children: List.generate(
-                                                                              productCategoires.length,
-                                                                              (productCategoiresIndex) {
-                                                                            final productCategoiresItem =
-                                                                                productCategoires[productCategoiresIndex];
-                                                                            return InkWell(
-                                                                              splashColor: Colors.transparent,
-                                                                              focusColor: Colors.transparent,
-                                                                              hoverColor: Colors.transparent,
-                                                                              highlightColor: Colors.transparent,
-                                                                              onTap: () async {
-                                                                                context.pushNamed(
-                                                                                  'Category',
-                                                                                  queryParameters: {
-                                                                                    'categoryItem': serializeParam(
-                                                                                      productCategoiresItem,
-                                                                                      ParamType.JSON,
-                                                                                    ),
-                                                                                  }.withoutNulls,
-                                                                                  extra: <String, dynamic>{
-                                                                                    kTransitionInfoKey: TransitionInfo(
-                                                                                      hasTransition: true,
-                                                                                      transitionType: PageTransitionType.rightToLeft,
-                                                                                    ),
-                                                                                  },
-                                                                                );
+                                                                      .width *
+                                                                  1.0,
+                                                              height: 56.0,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Color(
+                                                                    0x00FFFFFF),
+                                                              ),
+                                                              child: Builder(
+                                                                builder:
+                                                                    (context) {
+                                                                  final productCategoires = functions
+                                                                      .getDataFromMainDataJson(
+                                                                          FFAppState()
+                                                                              .MainDataJson
+                                                                              .toList(),
+                                                                          0,
+                                                                          'categories')
+                                                                      .toList()
+                                                                      .take(10)
+                                                                      .toList();
+                                                                  return SingleChildScrollView(
+                                                                    scrollDirection:
+                                                                        Axis.horizontal,
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: List.generate(
+                                                                          productCategoires
+                                                                              .length,
+                                                                          (productCategoiresIndex) {
+                                                                        final productCategoiresItem =
+                                                                            productCategoires[productCategoiresIndex];
+                                                                        return InkWell(
+                                                                          splashColor:
+                                                                              Colors.transparent,
+                                                                          focusColor:
+                                                                              Colors.transparent,
+                                                                          hoverColor:
+                                                                              Colors.transparent,
+                                                                          highlightColor:
+                                                                              Colors.transparent,
+                                                                          onTap:
+                                                                              () async {
+                                                                            context.pushNamed(
+                                                                              'Category',
+                                                                              queryParameters: {
+                                                                                'categoryItem': serializeParam(
+                                                                                  productCategoiresItem,
+                                                                                  ParamType.JSON,
+                                                                                ),
+                                                                              }.withoutNulls,
+                                                                              extra: <String, dynamic>{
+                                                                                kTransitionInfoKey: TransitionInfo(
+                                                                                  hasTransition: true,
+                                                                                  transitionType: PageTransitionType.rightToLeft,
+                                                                                ),
                                                                               },
-                                                                              child: CategoryItemWidget(
-                                                                                key: Key('Key0kz_${productCategoiresIndex}_of_${productCategoires.length}'),
-                                                                                categoryItem: productCategoiresItem,
-                                                                              ),
                                                                             );
-                                                                          }).divide(SizedBox(width: 8.0)).addToStart(SizedBox(width: 16.0)).addToEnd(
-                                                                              SizedBox(width: 16.0)),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ].divide(SizedBox(
-                                                                  height:
-                                                                      16.0)),
-                                                            );
-                                                          },
+                                                                          },
+                                                                          child:
+                                                                              CategoryItemWidget(
+                                                                            key:
+                                                                                Key('Key0kz_${productCategoiresIndex}_of_${productCategoires.length}'),
+                                                                            categoryItem:
+                                                                                productCategoiresItem,
+                                                                          ),
+                                                                        );
+                                                                      }).divide(SizedBox(width: 8.0)).addToStart(SizedBox(width: 16.0)).addToEnd(SizedBox(
+                                                                          width:
+                                                                              16.0)),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ].divide(SizedBox(
+                                                              height: 16.0)),
                                                         ),
                                                       ),
                                                     ),
@@ -775,127 +715,110 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                       0.0,
                                                                       0.0,
                                                                       16.0),
-                                                          child: FutureBuilder<
-                                                              ApiCallResponse>(
-                                                            future:
-                                                                PromoListCall
-                                                                    .call(
-                                                              countryCode: 'MN',
-                                                              mainCategoryId:
-                                                                  FFAppState()
-                                                                      .MainCategories[
-                                                                          0]
-                                                                      .id,
-                                                            ),
-                                                            builder: (context,
-                                                                snapshot) {
-                                                              // Customize what your widget looks like when it's loading.
-                                                              if (!snapshot
-                                                                  .hasData) {
-                                                                return Center(
-                                                                  child:
-                                                                      SizedBox(
-                                                                    width: 40.0,
-                                                                    height:
-                                                                        40.0,
-                                                                    child:
-                                                                        CircularProgressIndicator(
-                                                                      valueColor:
-                                                                          AlwaysStoppedAnimation<
-                                                                              Color>(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .secondary,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              }
-                                                              final pageViewPromoListResponse =
-                                                                  snapshot
-                                                                      .data!;
-                                                              return Builder(
-                                                                builder:
-                                                                    (context) {
-                                                                  final homePromos =
-                                                                      PromoListCall
-                                                                              .promoHome(
-                                                                            pageViewPromoListResponse.jsonBody,
-                                                                          )?.toList() ??
-                                                                          [];
-                                                                  return Container(
-                                                                    width: double
-                                                                        .infinity,
-                                                                    height:
-                                                                        500.0,
-                                                                    child:
-                                                                        Stack(
-                                                                      children: [
-                                                                        PageView
-                                                                            .builder(
-                                                                          controller: _model.pageViewController1 ??=
-                                                                              PageController(initialPage: min(0, homePromos.length - 1)),
-                                                                          onPageChanged: (_) =>
+                                                          child: Builder(
+                                                            builder: (context) {
+                                                              final homePromos = functions
+                                                                  .getDataFromMainDataJson(
+                                                                      FFAppState()
+                                                                          .MainDataJson
+                                                                          .toList(),
+                                                                      0,
+                                                                      'promo_home')
+                                                                  .toList()
+                                                                  .take(5)
+                                                                  .toList();
+                                                              return Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 500.0,
+                                                                child: Stack(
+                                                                  children: [
+                                                                    PageView
+                                                                        .builder(
+                                                                      controller: _model
+                                                                              .pageViewController1 ??=
+                                                                          PageController(
+                                                                              initialPage: min(0, homePromos.length - 1)),
+                                                                      onPageChanged:
+                                                                          (_) =>
                                                                               setState(() {}),
-                                                                          scrollDirection:
-                                                                              Axis.horizontal,
-                                                                          itemCount:
-                                                                              homePromos.length,
-                                                                          itemBuilder:
-                                                                              (context, homePromosIndex) {
-                                                                            final homePromosItem =
-                                                                                homePromos[homePromosIndex];
-                                                                            return ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(8.0),
-                                                                              child: Image.network(
-                                                                                getJsonField(
-                                                                                  homePromosItem,
-                                                                                  r'''$.media.img''',
-                                                                                ).toString(),
-                                                                                width: MediaQuery.sizeOf(context).width * 1.0,
-                                                                                fit: BoxFit.cover,
-                                                                              ),
-                                                                            );
-                                                                          },
-                                                                        ),
-                                                                        Align(
-                                                                          alignment: AlignmentDirectional(
+                                                                      scrollDirection:
+                                                                          Axis.horizontal,
+                                                                      itemCount:
+                                                                          homePromos
+                                                                              .length,
+                                                                      itemBuilder:
+                                                                          (context,
+                                                                              homePromosIndex) {
+                                                                        final homePromosItem =
+                                                                            homePromos[homePromosIndex];
+                                                                        return ClipRRect(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(8.0),
+                                                                          child:
+                                                                              Image.network(
+                                                                            getJsonField(
+                                                                              homePromosItem,
+                                                                              r'''$.media.img''',
+                                                                            ).toString(),
+                                                                            width:
+                                                                                MediaQuery.sizeOf(context).width * 1.0,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                    Align(
+                                                                      alignment:
+                                                                          AlignmentDirectional(
                                                                               0.0,
                                                                               1.5),
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                0.0,
-                                                                                0.0,
-                                                                                0.0,
-                                                                                8.0),
-                                                                            child:
-                                                                                smooth_page_indicator.SmoothPageIndicator(
-                                                                              controller: _model.pageViewController1 ??= PageController(initialPage: min(0, homePromos.length - 1)),
-                                                                              count: homePromos.length,
-                                                                              axisDirection: Axis.horizontal,
-                                                                              onDotClicked: (i) async {
-                                                                                await _model.pageViewController1!.animateToPage(
-                                                                                  i,
-                                                                                  duration: Duration(milliseconds: 500),
-                                                                                  curve: Curves.ease,
-                                                                                );
-                                                                              },
-                                                                              effect: smooth_page_indicator.SlideEffect(
-                                                                                spacing: 6.0,
-                                                                                radius: 999.0,
-                                                                                dotWidth: 8.0,
-                                                                                dotHeight: 8.0,
-                                                                                dotColor: Color(0x32000000),
-                                                                                activeDotColor: FlutterFlowTheme.of(context).primaryText,
-                                                                                paintStyle: PaintingStyle.fill,
-                                                                              ),
-                                                                            ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            8.0),
+                                                                        child: smooth_page_indicator
+                                                                            .SmoothPageIndicator(
+                                                                          controller: _model.pageViewController1 ??=
+                                                                              PageController(initialPage: min(0, homePromos.length - 1)),
+                                                                          count:
+                                                                              homePromos.length,
+                                                                          axisDirection:
+                                                                              Axis.horizontal,
+                                                                          onDotClicked:
+                                                                              (i) async {
+                                                                            await _model.pageViewController1!.animateToPage(
+                                                                              i,
+                                                                              duration: Duration(milliseconds: 500),
+                                                                              curve: Curves.ease,
+                                                                            );
+                                                                          },
+                                                                          effect:
+                                                                              smooth_page_indicator.SlideEffect(
+                                                                            spacing:
+                                                                                6.0,
+                                                                            radius:
+                                                                                999.0,
+                                                                            dotWidth:
+                                                                                8.0,
+                                                                            dotHeight:
+                                                                                8.0,
+                                                                            dotColor:
+                                                                                Color(0x32000000),
+                                                                            activeDotColor:
+                                                                                FlutterFlowTheme.of(context).primaryText,
+                                                                            paintStyle:
+                                                                                PaintingStyle.fill,
                                                                           ),
                                                                         ),
-                                                                      ],
+                                                                      ),
                                                                     ),
-                                                                  );
-                                                                },
+                                                                  ],
+                                                                ),
                                                               );
                                                             },
                                                           ),
@@ -1126,18 +1049,25 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                               .borderBottomColor,
                                       strokeWidth: 3.0,
                                       onRefresh: () async {
+                                        setState(() {
+                                          FFAppState().MainDataJson = [];
+                                          FFAppState().MainCategories = [];
+                                        });
+                                        setState(() {
+                                          _model.mainCatCounter = 0;
+                                        });
                                         // MainCategory API
-                                        _model.apiHomeMainCategoryShopPull =
+                                        _model.apiHomeMainCategoryCopyCopy =
                                             await HomeMainCategoryCall.call(
                                           countryCode: 'MN',
                                         );
-                                        if ((_model.apiHomeMainCategoryShopPull
+                                        if ((_model.apiHomeMainCategory
                                                 ?.succeeded ??
                                             true)) {
                                           setState(() {
                                             FFAppState()
                                                 .MainCategories = (getJsonField(
-                                              (_model.apiHomeMainCategoryShopPull
+                                              (_model.apiHomeMainCategory
                                                       ?.jsonBody ??
                                                   ''),
                                               r'''$.mainCategories''',
@@ -1156,6 +1086,28 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                             FFAppState().MainDataSelectedIndex =
                                                 0;
                                           });
+                                          while (_model.mainCatCounter <
+                                              FFAppState()
+                                                  .MainCategories
+                                                  .length) {
+                                            setState(() {
+                                              FFAppState().addToMainDataJson(
+                                                  functions.categoryJsonPrepare(
+                                                      getJsonField(
+                                                        (_model.apiHomeMainCategory
+                                                                ?.jsonBody ??
+                                                            ''),
+                                                        r'''$.data''',
+                                                        true,
+                                                      )!,
+                                                      _model.mainCatCounter));
+                                            });
+                                            // MainCatCounter++
+                                            setState(() {
+                                              _model.mainCatCounter =
+                                                  _model.mainCatCounter + 1;
+                                            });
+                                          }
                                         }
                                       },
                                       child: SingleChildScrollView(
@@ -1216,215 +1168,193 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                   .of(context)
                                                               .secondaryBackground,
                                                         ),
-                                                        child: FutureBuilder<
-                                                            ApiCallResponse>(
-                                                          future: CategoriesCall
-                                                              .call(
-                                                            countryCode: 'MN',
-                                                            mainCategoryId:
-                                                                FFAppState()
-                                                                    .MainCategories[
-                                                                        1]
-                                                                    .id,
-                                                          ),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            // Customize what your widget looks like when it's loading.
-                                                            if (!snapshot
-                                                                .hasData) {
-                                                              return Center(
-                                                                child: SizedBox(
-                                                                  width: 40.0,
-                                                                  height: 40.0,
-                                                                  child:
-                                                                      CircularProgressIndicator(
-                                                                    valueColor:
-                                                                        AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                      FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .secondary,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            }
-                                                            final columnCategoriesResponse =
-                                                                snapshot.data!;
-                                                            return Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: [
-                                                                Align(
-                                                                  alignment:
-                                                                      AlignmentDirectional(
-                                                                          0.0,
-                                                                          0.0),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            16.0,
-                                                                            0.0,
-                                                                            16.0,
-                                                                            0.0),
-                                                                    child:
-                                                                        InkWell(
-                                                                      splashColor:
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Align(
+                                                              alignment:
+                                                                  AlignmentDirectional(
+                                                                      0.0, 0.0),
+                                                              child: Padding(
+                                                                padding: EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        16.0,
+                                                                        0.0,
+                                                                        16.0,
+                                                                        0.0),
+                                                                child: InkWell(
+                                                                  splashColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  focusColor: Colors
+                                                                      .transparent,
+                                                                  hoverColor: Colors
+                                                                      .transparent,
+                                                                  highlightColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  onTap:
+                                                                      () async {
+                                                                    await showModalBottomSheet(
+                                                                      isScrollControlled:
+                                                                          true,
+                                                                      backgroundColor:
                                                                           Colors
                                                                               .transparent,
-                                                                      focusColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      hoverColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      highlightColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      onTap:
-                                                                          () async {
-                                                                        await showModalBottomSheet(
-                                                                          isScrollControlled:
-                                                                              true,
-                                                                          backgroundColor:
-                                                                              Colors.transparent,
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (context) {
-                                                                            return GestureDetector(
-                                                                              onTap: () => _model.unfocusNode.canRequestFocus ? FocusScope.of(context).requestFocus(_model.unfocusNode) : FocusScope.of(context).unfocus(),
-                                                                              child: Padding(
-                                                                                padding: MediaQuery.viewInsetsOf(context),
-                                                                                child: Container(
-                                                                                  height: MediaQuery.sizeOf(context).height * 0.9,
-                                                                                  child: ModalCategoryFilterWidget(
-                                                                                    title: FFLocalizations.of(context).getVariableText(
-                                                                                      mnText: 'Категори',
-                                                                                      enText: 'Категори',
-                                                                                    ),
-                                                                                    data: CategoriesCall.categories(
-                                                                                      columnCategoriesResponse.jsonBody,
-                                                                                    )!,
-                                                                                  ),
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) {
+                                                                        return GestureDetector(
+                                                                          onTap: () => _model.unfocusNode.canRequestFocus
+                                                                              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+                                                                              : FocusScope.of(context).unfocus(),
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                MediaQuery.viewInsetsOf(context),
+                                                                            child:
+                                                                                Container(
+                                                                              height: MediaQuery.sizeOf(context).height * 0.9,
+                                                                              child: ModalCategoryFilterWidget(
+                                                                                title: FFLocalizations.of(context).getVariableText(
+                                                                                  mnText: 'Категори',
+                                                                                  enText: 'Категори',
                                                                                 ),
+                                                                                data: functions.getDataFromMainDataJson(FFAppState().MainDataJson.toList(), 1, 'categories'),
                                                                               ),
-                                                                            );
-                                                                          },
-                                                                        ).then((value) =>
-                                                                            safeSetState(() {}));
+                                                                            ),
+                                                                          ),
+                                                                        );
                                                                       },
-                                                                      child:
-                                                                          wrapWithModel(
-                                                                        model: _model
-                                                                            .homeCategoryHeaderModel2,
-                                                                        updateCallback:
-                                                                            () =>
-                                                                                setState(() {}),
-                                                                        child:
-                                                                            HomeCategoryHeaderWidget(
-                                                                          title:
-                                                                              FFLocalizations.of(context).getVariableText(
-                                                                            mnText:
-                                                                                'Категори',
-                                                                            enText:
-                                                                                'Категори',
-                                                                          ),
-                                                                          titleBtn:
-                                                                              FFLocalizations.of(context).getVariableText(
-                                                                            mnText:
-                                                                                'Бүх категори',
-                                                                            enText:
-                                                                                'Бүх категори',
-                                                                          ),
-                                                                        ),
+                                                                    ).then((value) =>
+                                                                        safeSetState(
+                                                                            () {}));
+                                                                  },
+                                                                  child:
+                                                                      wrapWithModel(
+                                                                    model: _model
+                                                                        .homeCategoryHeaderModel2,
+                                                                    updateCallback: () =>
+                                                                        setState(
+                                                                            () {}),
+                                                                    child:
+                                                                        HomeCategoryHeaderWidget(
+                                                                      title: FFLocalizations.of(
+                                                                              context)
+                                                                          .getVariableText(
+                                                                        mnText:
+                                                                            'Категори',
+                                                                        enText:
+                                                                            'Категори',
+                                                                      ),
+                                                                      titleBtn:
+                                                                          FFLocalizations.of(context)
+                                                                              .getVariableText(
+                                                                        mnText:
+                                                                            'Бүх категори',
+                                                                        enText:
+                                                                            'Бүх категори',
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
-                                                                Container(
-                                                                  width: MediaQuery.sizeOf(
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              width: MediaQuery
+                                                                          .sizeOf(
                                                                               context)
-                                                                          .width *
-                                                                      1.0,
-                                                                  height: 56.0,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Color(
-                                                                        0x00FFFFFF),
-                                                                  ),
-                                                                  child:
-                                                                      Builder(
-                                                                    builder:
-                                                                        (context) {
-                                                                      final shopCategories = (CategoriesCall.categories(
-                                                                                columnCategoriesResponse.jsonBody,
-                                                                              )?.toList() ??
-                                                                              [])
-                                                                          .take(10)
-                                                                          .toList();
-                                                                      return SingleChildScrollView(
-                                                                        scrollDirection:
-                                                                            Axis.horizontal,
-                                                                        child:
-                                                                            Row(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          children: List.generate(
-                                                                              shopCategories.length,
-                                                                              (shopCategoriesIndex) {
-                                                                            final shopCategoriesItem =
-                                                                                shopCategories[shopCategoriesIndex];
-                                                                            return InkWell(
-                                                                              splashColor: Colors.transparent,
-                                                                              focusColor: Colors.transparent,
-                                                                              hoverColor: Colors.transparent,
-                                                                              highlightColor: Colors.transparent,
-                                                                              onTap: () async {
-                                                                                context.pushNamed(
-                                                                                  'Category',
-                                                                                  queryParameters: {
-                                                                                    'categoryItem': serializeParam(
-                                                                                      shopCategoriesItem,
-                                                                                      ParamType.JSON,
-                                                                                    ),
-                                                                                  }.withoutNulls,
-                                                                                  extra: <String, dynamic>{
-                                                                                    kTransitionInfoKey: TransitionInfo(
-                                                                                      hasTransition: true,
-                                                                                      transitionType: PageTransitionType.rightToLeft,
-                                                                                    ),
-                                                                                  },
-                                                                                );
+                                                                      .width *
+                                                                  1.0,
+                                                              height: 56.0,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Color(
+                                                                    0x00FFFFFF),
+                                                              ),
+                                                              child: Builder(
+                                                                builder:
+                                                                    (context) {
+                                                                  final shopCategories = functions
+                                                                      .getDataFromMainDataJson(
+                                                                          FFAppState()
+                                                                              .MainDataJson
+                                                                              .toList(),
+                                                                          1,
+                                                                          'categories')
+                                                                      .toList()
+                                                                      .take(10)
+                                                                      .toList();
+                                                                  return SingleChildScrollView(
+                                                                    scrollDirection:
+                                                                        Axis.horizontal,
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: List.generate(
+                                                                          shopCategories
+                                                                              .length,
+                                                                          (shopCategoriesIndex) {
+                                                                        final shopCategoriesItem =
+                                                                            shopCategories[shopCategoriesIndex];
+                                                                        return InkWell(
+                                                                          splashColor:
+                                                                              Colors.transparent,
+                                                                          focusColor:
+                                                                              Colors.transparent,
+                                                                          hoverColor:
+                                                                              Colors.transparent,
+                                                                          highlightColor:
+                                                                              Colors.transparent,
+                                                                          onTap:
+                                                                              () async {
+                                                                            context.pushNamed(
+                                                                              'Category',
+                                                                              queryParameters: {
+                                                                                'categoryItem': serializeParam(
+                                                                                  shopCategoriesItem,
+                                                                                  ParamType.JSON,
+                                                                                ),
+                                                                              }.withoutNulls,
+                                                                              extra: <String, dynamic>{
+                                                                                kTransitionInfoKey: TransitionInfo(
+                                                                                  hasTransition: true,
+                                                                                  transitionType: PageTransitionType.rightToLeft,
+                                                                                ),
                                                                               },
-                                                                              child: wrapWithModel(
-                                                                                model: _model.categoryItemModels2.getModel(
-                                                                                  shopCategoriesIndex.toString(),
-                                                                                  shopCategoriesIndex,
-                                                                                ),
-                                                                                updateCallback: () => setState(() {}),
-                                                                                child: CategoryItemWidget(
-                                                                                  key: Key(
-                                                                                    'Keyfve_${shopCategoriesIndex.toString()}',
-                                                                                  ),
-                                                                                  categoryItem: shopCategoriesItem,
-                                                                                ),
-                                                                              ),
                                                                             );
-                                                                          }).divide(SizedBox(width: 8.0)).addToStart(SizedBox(width: 16.0)).addToEnd(
-                                                                              SizedBox(width: 16.0)),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ].divide(SizedBox(
-                                                                  height:
-                                                                      16.0)),
-                                                            );
-                                                          },
+                                                                          },
+                                                                          child:
+                                                                              wrapWithModel(
+                                                                            model:
+                                                                                _model.categoryItemModels2.getModel(
+                                                                              shopCategoriesIndex.toString(),
+                                                                              shopCategoriesIndex,
+                                                                            ),
+                                                                            updateCallback: () =>
+                                                                                setState(() {}),
+                                                                            child:
+                                                                                CategoryItemWidget(
+                                                                              key: Key(
+                                                                                'Keyfve_${shopCategoriesIndex.toString()}',
+                                                                              ),
+                                                                              categoryItem: shopCategoriesItem,
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }).divide(SizedBox(width: 8.0)).addToStart(SizedBox(width: 16.0)).addToEnd(SizedBox(
+                                                                          width:
+                                                                              16.0)),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ].divide(SizedBox(
+                                                              height: 16.0)),
                                                         ),
                                                       ),
                                                     ),
@@ -1595,128 +1525,110 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                                       0.0,
                                                                       0.0,
                                                                       16.0),
-                                                          child: FutureBuilder<
-                                                              ApiCallResponse>(
-                                                            future:
-                                                                PromoListCall
-                                                                    .call(
-                                                              countryCode: 'MN',
-                                                              mainCategoryId:
-                                                                  FFAppState()
-                                                                      .MainCategories[
-                                                                          1]
-                                                                      .id,
-                                                            ),
-                                                            builder: (context,
-                                                                snapshot) {
-                                                              // Customize what your widget looks like when it's loading.
-                                                              if (!snapshot
-                                                                  .hasData) {
-                                                                return Center(
-                                                                  child:
-                                                                      SizedBox(
-                                                                    width: 40.0,
-                                                                    height:
-                                                                        40.0,
-                                                                    child:
-                                                                        CircularProgressIndicator(
-                                                                      valueColor:
-                                                                          AlwaysStoppedAnimation<
-                                                                              Color>(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .secondary,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              }
-                                                              final pageViewPromoListResponse =
-                                                                  snapshot
-                                                                      .data!;
-                                                              return Builder(
-                                                                builder:
-                                                                    (context) {
-                                                                  final shopPromoHome = (PromoListCall
-                                                                              .promoHome(
-                                                                            pageViewPromoListResponse.jsonBody,
-                                                                          )?.toList() ??
-                                                                          [])
-                                                                      .take(10)
-                                                                      .toList();
-                                                                  return Container(
-                                                                    width: double
-                                                                        .infinity,
-                                                                    height:
-                                                                        500.0,
-                                                                    child:
-                                                                        Stack(
-                                                                      children: [
-                                                                        PageView
-                                                                            .builder(
-                                                                          controller: _model.pageViewController2 ??=
-                                                                              PageController(initialPage: min(0, shopPromoHome.length - 1)),
-                                                                          onPageChanged: (_) =>
+                                                          child: Builder(
+                                                            builder: (context) {
+                                                              final shopPromoHome = functions
+                                                                  .getDataFromMainDataJson(
+                                                                      FFAppState()
+                                                                          .MainDataJson
+                                                                          .toList(),
+                                                                      1,
+                                                                      'promo_home')
+                                                                  .toList()
+                                                                  .take(5)
+                                                                  .toList();
+                                                              return Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 500.0,
+                                                                child: Stack(
+                                                                  children: [
+                                                                    PageView
+                                                                        .builder(
+                                                                      controller: _model
+                                                                              .pageViewController2 ??=
+                                                                          PageController(
+                                                                              initialPage: min(0, shopPromoHome.length - 1)),
+                                                                      onPageChanged:
+                                                                          (_) =>
                                                                               setState(() {}),
-                                                                          scrollDirection:
-                                                                              Axis.horizontal,
-                                                                          itemCount:
-                                                                              shopPromoHome.length,
-                                                                          itemBuilder:
-                                                                              (context, shopPromoHomeIndex) {
-                                                                            final shopPromoHomeItem =
-                                                                                shopPromoHome[shopPromoHomeIndex];
-                                                                            return ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(8.0),
-                                                                              child: Image.network(
-                                                                                getJsonField(
-                                                                                  shopPromoHomeItem,
-                                                                                  r'''$.media.img''',
-                                                                                ).toString(),
-                                                                                width: MediaQuery.sizeOf(context).width * 1.0,
-                                                                                fit: BoxFit.cover,
-                                                                              ),
-                                                                            );
-                                                                          },
-                                                                        ),
-                                                                        Align(
-                                                                          alignment: AlignmentDirectional(
+                                                                      scrollDirection:
+                                                                          Axis.horizontal,
+                                                                      itemCount:
+                                                                          shopPromoHome
+                                                                              .length,
+                                                                      itemBuilder:
+                                                                          (context,
+                                                                              shopPromoHomeIndex) {
+                                                                        final shopPromoHomeItem =
+                                                                            shopPromoHome[shopPromoHomeIndex];
+                                                                        return ClipRRect(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(8.0),
+                                                                          child:
+                                                                              Image.network(
+                                                                            getJsonField(
+                                                                              shopPromoHomeItem,
+                                                                              r'''$.media.img''',
+                                                                            ).toString(),
+                                                                            width:
+                                                                                MediaQuery.sizeOf(context).width * 1.0,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                    Align(
+                                                                      alignment:
+                                                                          AlignmentDirectional(
                                                                               0.0,
                                                                               1.5),
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                0.0,
-                                                                                0.0,
-                                                                                0.0,
-                                                                                8.0),
-                                                                            child:
-                                                                                smooth_page_indicator.SmoothPageIndicator(
-                                                                              controller: _model.pageViewController2 ??= PageController(initialPage: min(0, shopPromoHome.length - 1)),
-                                                                              count: shopPromoHome.length,
-                                                                              axisDirection: Axis.horizontal,
-                                                                              onDotClicked: (i) async {
-                                                                                await _model.pageViewController2!.animateToPage(
-                                                                                  i,
-                                                                                  duration: Duration(milliseconds: 500),
-                                                                                  curve: Curves.ease,
-                                                                                );
-                                                                              },
-                                                                              effect: smooth_page_indicator.SlideEffect(
-                                                                                spacing: 6.0,
-                                                                                radius: 999.0,
-                                                                                dotWidth: 8.0,
-                                                                                dotHeight: 8.0,
-                                                                                dotColor: Color(0x32000000),
-                                                                                activeDotColor: FlutterFlowTheme.of(context).primaryText,
-                                                                                paintStyle: PaintingStyle.fill,
-                                                                              ),
-                                                                            ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            0.0,
+                                                                            8.0),
+                                                                        child: smooth_page_indicator
+                                                                            .SmoothPageIndicator(
+                                                                          controller: _model.pageViewController2 ??=
+                                                                              PageController(initialPage: min(0, shopPromoHome.length - 1)),
+                                                                          count:
+                                                                              shopPromoHome.length,
+                                                                          axisDirection:
+                                                                              Axis.horizontal,
+                                                                          onDotClicked:
+                                                                              (i) async {
+                                                                            await _model.pageViewController2!.animateToPage(
+                                                                              i,
+                                                                              duration: Duration(milliseconds: 500),
+                                                                              curve: Curves.ease,
+                                                                            );
+                                                                          },
+                                                                          effect:
+                                                                              smooth_page_indicator.SlideEffect(
+                                                                            spacing:
+                                                                                6.0,
+                                                                            radius:
+                                                                                999.0,
+                                                                            dotWidth:
+                                                                                8.0,
+                                                                            dotHeight:
+                                                                                8.0,
+                                                                            dotColor:
+                                                                                Color(0x32000000),
+                                                                            activeDotColor:
+                                                                                FlutterFlowTheme.of(context).primaryText,
+                                                                            paintStyle:
+                                                                                PaintingStyle.fill,
                                                                           ),
                                                                         ),
-                                                                      ],
+                                                                      ),
                                                                     ),
-                                                                  );
-                                                                },
+                                                                  ],
+                                                                ),
                                                               );
                                                             },
                                                           ),

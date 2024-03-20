@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -100,9 +101,6 @@ class _BottomNavigationComponentWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => BottomNavigationComponentModel());
-
-    // On component load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {});
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -384,7 +382,10 @@ class _BottomNavigationComponentWidgetState
                           'PostNew',
                           queryParameters: {
                             'categoryList': serializeParam(
-                              _model.data,
+                              functions.getDataFromMainDataJson(
+                                  FFAppState().MainDataJson.toList(),
+                                  0,
+                                  'categories'),
                               ParamType.JSON,
                               true,
                             ),

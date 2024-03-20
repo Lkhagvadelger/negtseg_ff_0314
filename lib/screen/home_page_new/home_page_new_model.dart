@@ -14,6 +14,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/backend/schema/structs/index.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'home_page_new_widget.dart' show HomePageNewWidget;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
@@ -25,20 +26,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomePageNewModel extends FlutterFlowModel<HomePageNewWidget> {
+  ///  Local state fields for this page.
+
+  int mainCatCounter = 0;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
   // Stores action output result for [Backend Call - API (HomeMainCategory)] action in HomePageNew widget.
   ApiCallResponse? apiHomeMainCategory;
-  // Stores action output result for [Backend Call - API (Categories)] action in HomePageNew widget.
-  ApiCallResponse? apiResultProduct;
   // State field(s) for TabBar widget.
   TabController? tabBarController;
   int get tabBarCurrentIndex =>
       tabBarController != null ? tabBarController!.index : 0;
 
   // Stores action output result for [Backend Call - API (HomeMainCategory)] action in Column widget.
-  ApiCallResponse? apiHomeMainCategoryPull;
+  ApiCallResponse? apiHomeMainCategoryCopy;
   // Model for SearchBar component.
   late SearchBarModel searchBarModel1;
   // Model for HomeCategoryHeader component.
@@ -58,7 +61,7 @@ class HomePageNewModel extends FlutterFlowModel<HomePageNewWidget> {
   // Models for ProductItemPromo dynamic component.
   late FlutterFlowDynamicModels<ProductItemPromoModel> productItemPromoModels1;
   // Stores action output result for [Backend Call - API (HomeMainCategory)] action in Column widget.
-  ApiCallResponse? apiHomeMainCategoryShopPull;
+  ApiCallResponse? apiHomeMainCategoryCopyCopy;
   // Model for SearchBar component.
   late SearchBarModel searchBarModel2;
   // Model for HomeCategoryHeader component.

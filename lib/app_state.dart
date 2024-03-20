@@ -4,6 +4,7 @@ import '/backend/schema/enums/enums.dart';
 import 'backend/api_requests/api_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
+import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
   static FFAppState _instance = FFAppState._internal();
@@ -389,6 +390,35 @@ class FFAppState extends ChangeNotifier {
 
   void insertAtIndexInMainCategories(int _index, MainCategoryStruct _value) {
     _MainCategories.insert(_index, _value);
+  }
+
+  List<dynamic> _MainDataJson = [];
+  List<dynamic> get MainDataJson => _MainDataJson;
+  set MainDataJson(List<dynamic> _value) {
+    _MainDataJson = _value;
+  }
+
+  void addToMainDataJson(dynamic _value) {
+    _MainDataJson.add(_value);
+  }
+
+  void removeFromMainDataJson(dynamic _value) {
+    _MainDataJson.remove(_value);
+  }
+
+  void removeAtIndexFromMainDataJson(int _index) {
+    _MainDataJson.removeAt(_index);
+  }
+
+  void updateMainDataJsonAtIndex(
+    int _index,
+    dynamic Function(dynamic) updateFn,
+  ) {
+    _MainDataJson[_index] = updateFn(_MainDataJson[_index]);
+  }
+
+  void insertAtIndexInMainDataJson(int _index, dynamic _value) {
+    _MainDataJson.insert(_index, _value);
   }
 }
 
