@@ -44,3 +44,15 @@ dynamic getCategoryByIndex(
 ) {
   return mainDataJson[mainCatIndex]["categories"][categoryIndex];
 }
+
+dynamic checkJsonData(
+  String stringVal,
+  dynamic dataItem,
+  String checkColumnName,
+) {
+  if (dataItem[checkColumnName] == dataItem) {
+    return dataItem;
+  }
+
+  return null;
+}

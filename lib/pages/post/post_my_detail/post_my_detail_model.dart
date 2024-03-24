@@ -5,12 +5,12 @@ import '/components/myzar_item_with_date/myzar_item_with_date_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'post_new_preview_widget.dart' show PostNewPreviewWidget;
+import 'post_my_detail_widget.dart' show PostMyDetailWidget;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class PostNewPreviewModel extends FlutterFlowModel<PostNewPreviewWidget> {
+class PostMyDetailModel extends FlutterFlowModel<PostMyDetailWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

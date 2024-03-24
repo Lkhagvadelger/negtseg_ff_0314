@@ -8,11 +8,11 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'post_new_preview_model.dart';
-export 'post_new_preview_model.dart';
+import 'post_my_detail_model.dart';
+export 'post_my_detail_model.dart';
 
-class PostNewPreviewWidget extends StatefulWidget {
-  const PostNewPreviewWidget({
+class PostMyDetailWidget extends StatefulWidget {
+  const PostMyDetailWidget({
     super.key,
     this.selectedCategory,
     this.selectedPost,
@@ -22,18 +22,18 @@ class PostNewPreviewWidget extends StatefulWidget {
   final dynamic selectedPost;
 
   @override
-  State<PostNewPreviewWidget> createState() => _PostNewPreviewWidgetState();
+  State<PostMyDetailWidget> createState() => _PostMyDetailWidgetState();
 }
 
-class _PostNewPreviewWidgetState extends State<PostNewPreviewWidget> {
-  late PostNewPreviewModel _model;
+class _PostMyDetailWidgetState extends State<PostMyDetailWidget> {
+  late PostMyDetailModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => PostNewPreviewModel());
+    _model = createModel(context, () => PostMyDetailModel());
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }

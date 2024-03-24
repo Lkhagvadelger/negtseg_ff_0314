@@ -212,9 +212,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => PostNewDetailTypeWidget(),
         ),
         FFRoute(
-          name: 'PostNewPreview',
-          path: '/postNewPreview',
-          builder: (context, params) => PostNewPreviewWidget(
+          name: 'PostMyDetail',
+          path: '/postMyDetail',
+          builder: (context, params) => PostMyDetailWidget(
             selectedCategory:
                 params.getParam('selectedCategory', ParamType.JSON),
             selectedPost: params.getParam('selectedPost', ParamType.JSON),

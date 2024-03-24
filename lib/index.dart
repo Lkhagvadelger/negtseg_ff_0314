@@ -28,8 +28,8 @@ export '/pages/new_post/post_new_detail_image/post_new_detail_image_widget.dart'
     show PostNewDetailImageWidget;
 export '/pages/new_post/post_new_detail_type/post_new_detail_type_widget.dart'
     show PostNewDetailTypeWidget;
-export '/pages/new_post/post_new_preview/post_new_preview_widget.dart'
-    show PostNewPreviewWidget;
+export '/pages/post/post_my_detail/post_my_detail_widget.dart'
+    show PostMyDetailWidget;
 export '/pages/order/order/order_widget.dart' show OrderWidget;
 export '/pages/settings/settings/settings_widget.dart' show SettingsWidget;
 export '/screen/home_page_new/home_page_new_widget.dart' show HomePageNewWidget;

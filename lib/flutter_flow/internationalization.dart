@@ -334,33 +334,29 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
   },
   // PostMy
   {
-    '7m5nsb4b': {
+    '9o15j8o8': {
       'mn': 'Бүгд',
       'en': 'Бүгд',
     },
-    '1cxeyuvi': {
-      'mn': 'Нийтлэгдсэн',
-      'en': 'Нийтлэгдсэн',
+    '209fkko9': {
+      'mn': 'Нийтэлсэн',
+      'en': 'Нийтэлсэн',
     },
-    'tsxkzn7y': {
-      'mn': 'Tab View 2',
-      'en': '',
-    },
-    'sh9x787a': {
+    'z8vtpfqp': {
       'mn': 'Шалгагдаж байгаа',
       'en': 'Шалгагдаж байгаа',
     },
-    '0e48aeks': {
-      'mn': 'Tab View 3',
-      'en': '',
-    },
-    '2au5w5bi': {
+    'hkmpcxkq': {
       'mn': 'Буцаагдсан',
       'en': 'Буцаагдсан',
     },
-    'oudjytv1': {
-      'mn': 'Tab View 4',
-      'en': '',
+    'sq772fs7': {
+      'mn': 'Устгагдсан',
+      'en': 'Устгагдсан',
+    },
+    'e5d22yzt': {
+      'mn': 'Архивласан',
+      'en': 'Архивласан',
     },
     'lwbmi40b': {
       'mn': 'Миний зарууд',
@@ -662,7 +658,7 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': '',
     },
   },
-  // PostNewPreview
+  // PostMyDetail
   {
     '26m8f1dl': {
       'mn': 'Зар шалгагдаж байгаа',

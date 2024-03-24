@@ -297,47 +297,22 @@ class ZarCreateCall {
   }
 }
 
-class ZarCreateCopyCopyCopyCopyCopyCopyCopyCopyCopyCopyCall {
+class MyZarListCall {
   static Future<ApiCallResponse> call({
-    String? token = '',
-    String? title = '',
-    String? description = '',
-    List<String>? locationList,
-    String? categoryId = '',
-    List<String>? categoryIdsList,
-    dynamic? mediaJson,
-    double? price,
-    bool? isFlexiblePrice,
     String? countryCode = '',
-    dynamic? dynamicFieldsJson,
-    String? zarType = '',
-    String? categoryMainId = '',
+    String? zarStatus = '',
+    String? token = '',
   }) async {
-    final location = _serializeList(locationList);
-    final categoryIds = _serializeList(categoryIdsList);
-    final media = _serializeJson(mediaJson);
-    final dynamicFields = _serializeJson(dynamicFieldsJson, true);
-
     return ApiManager.instance.makeApiCall(
-      callName: 'ZarCreate Copy Copy Copy Copy Copy Copy Copy Copy Copy Copy',
-      apiUrl: 'https://1tseg.mn/api/zar',
+      callName: 'My zarList',
+      apiUrl: 'https://1tseg.mn/api/zar/list',
       callType: ApiCallType.POST,
       headers: {
         'Authorization': 'Bearer ${token}',
       },
       params: {
-        'title': title,
-        'description': description,
-        'location': location,
-        'categoryId': categoryId,
-        'categoryIds': categoryIds,
-        'media': media,
-        'price': price,
-        'isFlexiblePrice': isFlexiblePrice,
         'countryCode': countryCode,
-        'categoryFieldData': dynamicFields,
-        'zarType': zarType,
-        'categoryMainId': categoryMainId,
+        'zarStatus': zarStatus,
       },
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
       returnBody: true,
@@ -347,6 +322,17 @@ class ZarCreateCopyCopyCopyCopyCopyCopyCopyCopyCopyCopyCall {
       alwaysAllowBody: false,
     );
   }
+
+  static String? statusName(dynamic response) =>
+      castToType<String>(getJsonField(
+        response,
+        r'''$.list[:].statusName''',
+      ));
+  static List? list(dynamic response) => getJsonField(
+        response,
+        r'''$.list''',
+        true,
+      ) as List?;
 }
 
 class ZarCreateCopyCopyCopyCopyCopyCopyCopyCopyCopyCall {

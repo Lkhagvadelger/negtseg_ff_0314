@@ -471,8 +471,9 @@ class _HomePageNewWidgetState extends State<HomePageNewWidget>
                                                               height: 56.0,
                                                               decoration:
                                                                   BoxDecoration(
-                                                                color: Color(
-                                                                    0x00FFFFFF),
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryBackground,
                                                               ),
                                                               child: Builder(
                                                                 builder:

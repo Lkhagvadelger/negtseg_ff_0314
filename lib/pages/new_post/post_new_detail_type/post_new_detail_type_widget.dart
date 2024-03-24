@@ -301,7 +301,7 @@ class _PostNewDetailTypeWidgetState extends State<PostNewDetailTypeWidget> {
                                 FFAppState().MainCategories.first.id,
                           );
                           if ((_model.zarApiResult?.succeeded ?? true)) {
-                            context.pushNamed('PostNewPreview');
+                            context.pushNamed('LoginSuccess');
                           }
                         } else {
                           context.pushNamed('Login');
