@@ -188,7 +188,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => PostNewCategoryWidget(
             catIds: params.getParam<String>('catIds', ParamType.String, true),
             catIndexs: params.getParam<int>('catIndexs', ParamType.int, true),
-            catList: params.getParam<dynamic>('catList', ParamType.JSON, true),
           ),
         ),
         FFRoute(

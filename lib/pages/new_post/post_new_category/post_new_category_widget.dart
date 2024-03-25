@@ -17,12 +17,10 @@ class PostNewCategoryWidget extends StatefulWidget {
     super.key,
     required this.catIds,
     required this.catIndexs,
-    this.catList,
   });
 
   final List<String>? catIds;
   final List<int>? catIndexs;
-  final List<dynamic>? catList;
 
   @override
   State<PostNewCategoryWidget> createState() => _PostNewCategoryWidgetState();
@@ -573,7 +571,17 @@ class _PostNewCategoryWidgetState extends State<PostNewCategoryWidget> {
                                         });
                                       }
 
-                                      context.pushNamed('PostNewDetail');
+                                      context.goNamed(
+                                        'PostNewDetail',
+                                        extra: <String, dynamic>{
+                                          kTransitionInfoKey: TransitionInfo(
+                                            hasTransition: true,
+                                            transitionType:
+                                                PageTransitionType.fade,
+                                            duration: Duration(milliseconds: 0),
+                                          ),
+                                        },
+                                      );
                                     } else {
                                       context.pushNamed(
                                         'PostNewCategory',

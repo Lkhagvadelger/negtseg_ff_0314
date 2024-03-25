@@ -4,6 +4,7 @@ import '/components/form/dynamic_form_input/dynamic_form_input_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -54,20 +55,6 @@ class _PostNewDetailWidgetState extends State<PostNewDetailWidget> {
           title: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              InkWell(
-                splashColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () async {
-                  context.safePop();
-                },
-                child: Icon(
-                  FFIcons.karrowSmLeft04,
-                  color: FlutterFlowTheme.of(context).secondaryText,
-                  size: 24.0,
-                ),
-              ),
               Expanded(
                 child: Align(
                   alignment: AlignmentDirectional(-1.0, 0.0),
@@ -193,178 +180,199 @@ class _PostNewDetailWidgetState extends State<PostNewDetailWidget> {
                                           lineHeight: 1.15,
                                         ),
                                   ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(6.0),
-                                        bottomRight: Radius.circular(6.0),
-                                        topLeft: Radius.circular(6.0),
-                                        topRight: Radius.circular(6.0),
-                                      ),
-                                      border: Border.all(
+                                  InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                        'PostNew',
+                                        queryParameters: {
+                                          'categoryList': serializeParam(
+                                            functions.getDataFromMainDataJson(
+                                                FFAppState()
+                                                    .MainDataJson
+                                                    .toList(),
+                                                0,
+                                                'categories'),
+                                            ParamType.JSON,
+                                            true,
+                                          ),
+                                        }.withoutNulls,
+                                        extra: <String, dynamic>{
+                                          kTransitionInfoKey: TransitionInfo(
+                                            hasTransition: true,
+                                            transitionType:
+                                                PageTransitionType.fade,
+                                            duration: Duration(milliseconds: 0),
+                                          ),
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
-                                            .borderSecondary,
-                                        width: 1.0,
+                                            .secondaryBackground,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(6.0),
+                                          bottomRight: Radius.circular(6.0),
+                                          topLeft: Radius.circular(6.0),
+                                          topRight: Radius.circular(6.0),
+                                        ),
+                                        border: Border.all(
+                                          color: FlutterFlowTheme.of(context)
+                                              .borderSecondary,
+                                          width: 1.0,
+                                        ),
                                       ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          14.0, 12.0, 14.0, 12.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                              ),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    FFAppState()
-                                                        .FormZar
-                                                        .category
-                                                        .name,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily: 'SFPRO',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          fontSize: 15.0,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          useGoogleFonts: false,
-                                                          lineHeight: 1.33,
-                                                        ),
-                                                  ),
-                                                  Builder(
-                                                    builder: (context) {
-                                                      final categoryNames =
-                                                          FFAppState()
-                                                              .FormZar
-                                                              .categoryNames
-                                                              .toList();
-                                                      return Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: List.generate(
-                                                            categoryNames
-                                                                .length,
-                                                            (categoryNamesIndex) {
-                                                          final categoryNamesItem =
-                                                              categoryNames[
-                                                                  categoryNamesIndex];
-                                                          return Builder(
-                                                            builder: (context) {
-                                                              if (FFAppState()
-                                                                      .FormZar
-                                                                      .categoryNames
-                                                                      .last ==
-                                                                  categoryNamesItem) {
-                                                                return Text(
-                                                                  categoryNamesItem,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'SFPRO',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .helpText,
-                                                                        fontSize:
-                                                                            13.0,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                        useGoogleFonts:
-                                                                            false,
-                                                                        lineHeight:
-                                                                            1.38,
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            14.0, 12.0, 14.0, 12.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryBackground,
+                                                ),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      FFAppState()
+                                                          .FormZar
+                                                          .category
+                                                          .name,
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily: 'SFPRO',
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryText,
+                                                            fontSize: 15.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal,
+                                                            useGoogleFonts:
+                                                                false,
+                                                            lineHeight: 1.33,
+                                                          ),
+                                                    ),
+                                                    Builder(
+                                                      builder: (context) {
+                                                        final categoryNames =
+                                                            FFAppState()
+                                                                .FormZar
+                                                                .categoryNames
+                                                                .toList();
+                                                        return Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: List.generate(
+                                                              categoryNames
+                                                                  .length,
+                                                              (categoryNamesIndex) {
+                                                            final categoryNamesItem =
+                                                                categoryNames[
+                                                                    categoryNamesIndex];
+                                                            return Builder(
+                                                              builder:
+                                                                  (context) {
+                                                                if (FFAppState()
+                                                                        .FormZar
+                                                                        .categoryNames
+                                                                        .last ==
+                                                                    categoryNamesItem) {
+                                                                  return Text(
+                                                                    categoryNamesItem,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'SFPRO',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).helpText,
+                                                                          fontSize:
+                                                                              13.0,
+                                                                          fontWeight:
+                                                                              FontWeight.normal,
+                                                                          useGoogleFonts:
+                                                                              false,
+                                                                          lineHeight:
+                                                                              1.38,
+                                                                        ),
+                                                                  );
+                                                                } else {
+                                                                  return Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Text(
+                                                                        categoryNamesItem,
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'SFPRO',
+                                                                              color: FlutterFlowTheme.of(context).helpText,
+                                                                              fontSize: 13.0,
+                                                                              fontWeight: FontWeight.normal,
+                                                                              useGoogleFonts: false,
+                                                                              lineHeight: 1.38,
+                                                                            ),
                                                                       ),
-                                                                );
-                                                              } else {
-                                                                return Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Text(
-                                                                      categoryNamesItem,
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'SFPRO',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).helpText,
-                                                                            fontSize:
-                                                                                13.0,
-                                                                            fontWeight:
-                                                                                FontWeight.normal,
-                                                                            useGoogleFonts:
-                                                                                false,
-                                                                            lineHeight:
-                                                                                1.38,
-                                                                          ),
-                                                                    ),
-                                                                    Text(
-                                                                      FFLocalizations.of(
-                                                                              context)
-                                                                          .getText(
-                                                                        'zv2l1cjf' /* / */,
+                                                                      Text(
+                                                                        FFLocalizations.of(context)
+                                                                            .getText(
+                                                                          'zv2l1cjf' /* / */,
+                                                                        ),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'SFPRO',
+                                                                              color: FlutterFlowTheme.of(context).helpText,
+                                                                              fontSize: 13.0,
+                                                                              fontWeight: FontWeight.normal,
+                                                                              useGoogleFonts: false,
+                                                                              lineHeight: 1.38,
+                                                                            ),
                                                                       ),
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyMedium
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'SFPRO',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).helpText,
-                                                                            fontSize:
-                                                                                13.0,
-                                                                            fontWeight:
-                                                                                FontWeight.normal,
-                                                                            useGoogleFonts:
-                                                                                false,
-                                                                            lineHeight:
-                                                                                1.38,
-                                                                          ),
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              }
-                                                            },
-                                                          );
-                                                        }),
-                                                      );
-                                                    },
-                                                  ),
-                                                ],
+                                                                    ],
+                                                                  );
+                                                                }
+                                                              },
+                                                            );
+                                                          }),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Icon(
-                                            FFIcons.kcircleCheck,
-                                            color: FlutterFlowTheme.of(context)
-                                                .successIcon,
-                                            size: 16.0,
-                                          ),
-                                        ].divide(SizedBox(width: 6.0)),
+                                            Icon(
+                                              FFIcons.kcircleCheck,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .successIcon,
+                                              size: 16.0,
+                                            ),
+                                          ].divide(SizedBox(width: 6.0)),
+                                        ),
                                       ),
                                     ),
                                   ),

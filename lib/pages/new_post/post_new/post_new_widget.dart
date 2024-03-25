@@ -203,11 +203,6 @@ class _PostNewWidgetState extends State<PostNewWidget> {
                                           ParamType.int,
                                           true,
                                         ),
-                                        'catList': serializeParam(
-                                          widget.categoryList,
-                                          ParamType.JSON,
-                                          true,
-                                        ),
                                       }.withoutNulls,
                                     );
                                   },
