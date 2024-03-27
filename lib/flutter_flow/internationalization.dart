@@ -1258,6 +1258,13 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': 'Хайх',
     },
   },
+  // ModalCategoryFilterData
+  {
+    'brevq4az': {
+      'mn': 'Филтер',
+      'en': 'Филтер',
+    },
+  },
   // Miscellaneous
   {
     'uqbiv1i0': {
