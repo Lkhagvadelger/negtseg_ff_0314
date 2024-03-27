@@ -1,6 +1,7 @@
 import '/backend/api_requests/api_calls.dart';
 import '/components/headers/category_header/category_header_widget.dart';
 import '/components/headers/header_section_title/header_section_title_widget.dart';
+import '/components/modals/modal_category_filter_data/modal_category_filter_data_widget.dart';
 import '/components/product/product_item_promo/product_item_promo_widget.dart';
 import '/components/search_bar/search_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';

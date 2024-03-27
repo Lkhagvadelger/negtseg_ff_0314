@@ -1,6 +1,7 @@
 import '/backend/api_requests/api_calls.dart';
 import '/components/headers/category_header/category_header_widget.dart';
 import '/components/headers/header_section_title/header_section_title_widget.dart';
+import '/components/modals/modal_category_filter_data/modal_category_filter_data_widget.dart';
 import '/components/product/product_item_promo/product_item_promo_widget.dart';
 import '/components/search_bar/search_bar_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -116,7 +117,34 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                               focusColor: Colors.transparent,
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
-                              onTap: () async {},
+                              onTap: () async {
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  enableDrag: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return GestureDetector(
+                                      onTap: () => _model
+                                              .unfocusNode.canRequestFocus
+                                          ? FocusScope.of(context)
+                                              .requestFocus(_model.unfocusNode)
+                                          : FocusScope.of(context).unfocus(),
+                                      child: Padding(
+                                        padding:
+                                            MediaQuery.viewInsetsOf(context),
+                                        child: ModalCategoryFilterDataWidget(
+                                          data: getJsonField(
+                                            widget.categoryItem,
+                                            r'''$.filterCategory''',
+                                            true,
+                                          )!,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => safeSetState(() {}));
+                              },
                               child: Icon(
                                 FFIcons.kfilter09,
                                 color:

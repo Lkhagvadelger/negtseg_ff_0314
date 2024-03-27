@@ -140,10 +140,7 @@ class _ModalCategoryFilterDataWidgetState
                                 ).toString()}'}',
                               ),
                               dynamicItem: CategoryFilterStruct.maybeFromMap(
-                                  getJsonField(
-                                filterListItem,
-                                r'''$.id''',
-                              ))!,
+                                  filterListItem)!,
                               itemIndex: filterListIndex,
                             ),
                           );
